@@ -1,0 +1,38 @@
+﻿name = "chudo-mail-dev"
+main = "src/index.js"
+compatibility_date = "2025-06-04"
+keep_vars = true
+
+[observability]
+enabled = true
+
+[dev]
+ip = "0.0.0.0"
+
+[[d1_databases]]
+binding = "db"
+database_name = "chudo-mail-dev"
+database_id = "your-dev-database-id"
+
+[[kv_namespaces]]
+binding = "kv"
+id = "your-dev-kv-id"
+
+#[[r2_buckets]]
+#binding = "r2"
+#bucket_name = "chudo-mail-dev"
+
+[assets]
+binding = "assets"
+directory = "./dist"
+not_found_handling = "single-page-application"
+run_worker_first = true
+
+[vars]
+ENVIRONMENT = "development"
+ALLOWED_ORIGINS = "http://localhost:3000,http://localhost:5173"
+orm_log = true
+domain = ["localhost.local", "dev.chudo.com"]
+admin = "admin@localhost.local"
+jwt_secret = "dev-secret-do-not-use-in-production"
+ADMIN_IPS = "127.0.0.1,::1"

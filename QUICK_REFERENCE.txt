@@ -1,0 +1,24 @@
+﻿CHUDO MAIL SECURE v2.0.1 - QUICK REFERENCE
+
+DEPLOY:
+  wrangler login
+  wrangler secret put jwt_secret
+  wrangler secret put RESEND_WEBHOOK_SECRET
+  wrangler deploy
+
+TEST SECURITY:
+  curl -H "Origin: https://evil.com" https://your-domain.com/api/login
+  curl https://your-domain.com/attachments/test.pdf
+  for i in {1..110}; do curl your-domain.com/api/email/list; done
+
+MONITOR:
+  wrangler tail                    # Live logs
+  wrangler kv list                 # KV keys
+  wrangler d1 execute chudo-mail-db --command="SELECT COUNT(*) FROM user"
+
+BACKUP:
+  Copy-Item src backup_20260326 -Recurse
+
+EMERGENCY:
+  wrangler kv delete auth:<user_id>    # Revoke token
+  wrangler secret put jwt_secret       # Rotate secret

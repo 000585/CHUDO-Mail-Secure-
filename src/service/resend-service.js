@@ -1,0 +1,33 @@
+﻿import emailService from './email-service.js';
+import { emailConst } from '../const/entity-const.js';
+import BizError from '../error/biz-error.js';
+
+const resendService = {
+    async handleWebhook(c, body) {
+        const params = { resendEmailId: body.data.email_id, status: emailConst.status.SENT };
+
+        if (body.type === 'email.delivered') {
+            params.status = emailConst.status.DELIVERED;
+            params.message = null;
+        } else if (body.type === 'email.complained') {
+            params.status = emailConst.status.COMPLAINED;
+            params.message = null;
+        } else if (body.type === 'email.bounced') {
+            let bounce = body.data.bounce;
+            bounce = JSON.stringify(bounce);
+            params.status = emailConst.status.BOUNCED;
+            params.message = bounce;
+        } else if (body.type === 'email.delivery_delayed') {
+            params.status = emailConst.status.DELAYED;
+            params.message = null;
+        } else if (body.type === 'email.failed') {
+            params.status = emailConst.status.FAILED;
+            params.message = body.data.failed.reason;
+        }
+
+        const emailRow = await emailService.updateEmailStatus(c, params);
+        if (!emailRow) throw new BizError('Failed to update email status');
+    }
+};
+
+export default resendService;

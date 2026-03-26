@@ -1,0 +1,48 @@
+﻿name = "chudo-mail-secure"
+main = "src/index.js"
+compatibility_date = "2025-06-04"
+keep_vars = true
+
+[observability]
+enabled = true
+
+#[[d1_databases]]
+#binding = "db"
+#database_name = "chudo-mail-db"
+#database_id = ""
+
+#[[kv_namespaces]]
+#binding = "kv"
+#id = ""
+
+#[[r2_buckets]]
+#binding = "r2"
+#bucket_name = "chudo-mail-storage"
+
+[assets]
+binding = "assets"
+directory = "./dist"
+not_found_handling = "single-page-application"
+run_worker_first = true
+
+[triggers]
+crons = ["0 16 * * *"]
+
+[vars]
+ENVIRONMENT = "production"
+ALLOWED_ORIGINS = "https://chudo-mail.pages.dev,https://mail.chudo.com"
+
+#[vars]
+#orm_log = false
+#domain = []                 # example: ["chudo.com","mail.chudo.com"]
+#admin = ""                  # admin@chudo.com
+#jwt_secret = ""             # Generate strong secret
+
+# Secrets (use wrangler secret put)
+# ADMIN_IPS = "1.2.3.4,5.6.7.8"
+# public_api_secret = ""
+# linuxdo_client_id = ""
+# linuxdo_client_secret = ""
+
+[build]
+command = "npm install && npm run build:frontend"
